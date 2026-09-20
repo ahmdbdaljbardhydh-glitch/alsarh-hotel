@@ -1,123 +1,63 @@
 <?php
-require_once __DIR__ . '/includes/functions.php';
+// لوحة القيادة (Dashboard) — أول صفحة يراها الأدمن، تعرض إحصائيات سريعة عن حالة الموقع
+$pageTitle = 'لوحة القيادة';
+require_once __DIR__ . '/includes/admin_header.php';
 
-// جلب أحدث 3 غرف متاحة، 4 خدمات، وآخر 3 تقييمات معتمدة فقط لعرضها بالرئيسية
-$rooms = $pdo->query('SELECT * FROM rooms WHERE status = "available" ORDER BY created_at DESC LIMIT 3')->fetchAll();
-$services = $pdo->query('SELECT * FROM services ORDER BY id ASC LIMIT 4')->fetchAll();
-$reviews = $pdo->query('SELECT reviews.*, users.full_name, users.image FROM reviews
-                         JOIN users ON users.id = reviews.user_id
-                         WHERE reviews.status = "approved" ORDER BY reviews.created_at DESC LIMIT 3')->fetchAll();
+// COUNT(*) c: نطلب من MySQL نفسه حساب عدد الصفوف مباشرة (أسرع من جلبها كلها وعدّها في PHP)
+// ['c'] في نهاية كل سطر: نقرأ قيمة العمود c مباشرة من الصف الوحيد الناتج
+$usersCount    = $pdo->query('SELECT COUNT(*) c FROM users WHERE user_type="user"')->fetch()['c'];
+$pendingUsers  = $pdo->query('SELECT COUNT(*) c FROM users WHERE status="pending"')->fetch()['c'];
+$roomsCount    = $pdo->query('SELECT COUNT(*) c FROM rooms')->fetch()['c'];
+$bookingsCount = $pdo->query('SELECT COUNT(*) c FROM bookings WHERE status="pending"')->fetch()['c'];
+$messagesCount = $pdo->query('SELECT COUNT(*) c FROM contact_messages WHERE is_read=0')->fetch()['c'];
 
-// جلب صورة خلفية قسم الهيرو الرئيسي التي رفعها الأدمن (إن وُجدت)
-$heroBanner = getPageBanner($pdo, 'home');
-$heroStyle = $heroBanner ? "background-image:url('assets/img/banners/" . htmlspecialchars($heroBanner) . "')" : '';
-
-$pageTitle = 'الرئيسية';
-require_once __DIR__ . '/includes/header.php';
+// آخر 5 حجوزات مع اسم الغرفة واسم العميل عبر JOIN بين 3 جداول دفعة واحدة
+$recentBookings = $pdo->query('SELECT bookings.*, rooms.title, users.full_name FROM bookings
+                                JOIN rooms ON rooms.id = bookings.room_id
+                                JOIN users ON users.id = bookings.user_id
+                                ORDER BY bookings.created_at DESC LIMIT 5')->fetchAll();
 ?>
 
-<!-- قسم الهيرو: الخلفية تأتي من صورة الأدمن (إن وُجدت) وتظهر كخلفية متحركة بصريًا خلف النص -->
-<section class="hero" style="<?php echo $heroStyle; ?>">
-  <div class="hero-overlay"></div>
-  <div class="container hero-content">
-    <h1>أهلًا بكم في <span>الصرح الذهبي</span></h1>
-    <p>حيث تلتقي الفخامة بالضيافة الأصيلة، تجربة إقامة خمس نجوم لا تُنسى</p>
-    <div class="hero-actions">
-      <a href="rooms.php" class="btn btn-primary btn-lg">استعرض الغرف</a>
-      <a href="#booking" class="btn btn-outline-light btn-lg">احجز الآن</a>
-    </div>
+<div class="stats-grid">
+  <div class="stat-card">
+    <i class="fa-solid fa-users"></i>
+    <div><h3><?php echo $usersCount; ?></h3><p>إجمالي المستخدمين</p></div>
   </div>
-</section>
-
-<section class="section booking-strip" id="booking">
-  <div class="container booking-form-card">
-    <form action="rooms.php" method="get" class="quick-booking">
-      <div class="form-group">
-        <label><i class="fa-solid fa-calendar-days"></i> تاريخ الوصول</label>
-        <input type="date" name="check_in" required>
-      </div>
-      <div class="form-group">
-        <label><i class="fa-solid fa-calendar-days"></i> تاريخ المغادرة</label>
-        <input type="date" name="check_out" required>
-      </div>
-      <div class="form-group">
-        <label><i class="fa-solid fa-users"></i> عدد الضيوف</label>
-        <input type="number" name="guests" min="1" value="2">
-      </div>
-      <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> بحث عن غرفة</button>
-    </form>
+  <div class="stat-card warn">
+    <i class="fa-solid fa-user-clock"></i>
+    <div><h3><?php echo $pendingUsers; ?></h3><p>حسابات بانتظار التفعيل</p></div>
   </div>
-</section>
+  <div class="stat-card">
+    <i class="fa-solid fa-bed"></i>
+    <div><h3><?php echo $roomsCount; ?></h3><p>إجمالي الغرف</p></div>
+  </div>
+  <div class="stat-card warn">
+    <i class="fa-solid fa-calendar-check"></i>
+    <div><h3><?php echo $bookingsCount; ?></h3><p>حجوزات بانتظار التأكيد</p></div>
+  </div>
+  <div class="stat-card">
+    <i class="fa-solid fa-envelope"></i>
+    <div><h3><?php echo $messagesCount; ?></h3><p>رسائل غير مقروءة</p></div>
+  </div>
+</div>
 
-<section class="section">
-  <div class="container">
-    <div class="section-title">
-      <h2>غرف وأجنحة مميزة</h2>
-      <p>اختر من بين تشكيلة واسعة من الغرف الفاخرة المصممة لراحتك</p>
-    </div>
-    <div class="cards-grid">
-      <?php foreach ($rooms as $room): ?>
-        <div class="room-card">
-          <div class="room-img" style="background-image:url('assets/img/rooms/<?php echo htmlspecialchars($room['image']); ?>')"></div>
-          <div class="room-body">
-            <h3><?php echo htmlspecialchars($room['title']); ?></h3>
-            <p><?php echo htmlspecialchars(mb_substr($room['description'], 0, 80)); ?>...</p>
-            <div class="room-footer">
-              <span class="price"><?php echo number_format($room['price'], 2); ?> $ / ليلة</span>
-              <a href="room-details.php?id=<?php echo $room['id']; ?>" class="btn btn-sm btn-outline">التفاصيل</a>
-            </div>
-          </div>
-        </div>
+<div class="admin-panel">
+  <h2>أحدث الحجوزات</h2>
+  <table class="data-table">
+    <thead><tr><th>العميل</th><th>الغرفة</th><th>الوصول</th><th>المغادرة</th><th>الحالة</th></tr></thead>
+    <tbody>
+      <?php foreach ($recentBookings as $b): ?>
+        <tr>
+          <td><?php echo htmlspecialchars($b['full_name']); ?></td>
+          <td><?php echo htmlspecialchars($b['title']); ?></td>
+          <td><?php echo formatDate($b['check_in']); ?></td>
+          <td><?php echo formatDate($b['check_out']); ?></td>
+          <td><span class="status status-<?php echo $b['status']; ?>"><?php echo $b['status']; ?></span></td>
+        </tr>
       <?php endforeach; ?>
-    </div>
-    <div class="text-center">
-      <a href="rooms.php" class="btn btn-outline">عرض جميع الغرف</a>
-    </div>
-  </div>
-</section>
+      <?php if (!$recentBookings): ?><tr><td colspan="5">لا توجد حجوزات بعد.</td></tr><?php endif; ?>
+    </tbody>
+  </table>
+</div>
 
-<section class="section section-alt">
-  <div class="container">
-    <div class="section-title">
-      <h2>خدماتنا الفندقية</h2>
-      <p>نوفر لك كل ما تحتاجه لإقامة استثنائية</p>
-    </div>
-    <div class="services-grid">
-      <?php foreach ($services as $service): ?>
-        <div class="service-card">
-          <i class="fa-solid <?php echo htmlspecialchars($service['icon'] ?: 'fa-star'); ?>"></i>
-          <h4><?php echo htmlspecialchars($service['title']); ?></h4>
-          <p><?php echo htmlspecialchars($service['description']); ?></p>
-        </div>
-      <?php endforeach; ?>
-    </div>
-  </div>
-</section>
-
-<?php if ($reviews): ?>
-<section class="section">
-  <div class="container">
-    <div class="section-title">
-      <h2>آراء ضيوفنا</h2>
-    </div>
-    <div class="reviews-grid">
-      <?php foreach ($reviews as $r): ?>
-        <div class="review-card">
-          <div class="stars">
-            <?php for ($i=0;$i<5;$i++): ?>
-              <i class="fa-solid fa-star <?php echo $i < $r['rating'] ? 'active' : ''; ?>"></i>
-            <?php endfor; ?>
-          </div>
-          <p>"<?php echo htmlspecialchars($r['comment']); ?>"</p>
-          <div class="reviewer">
-            <img src="assets/img/users/<?php echo htmlspecialchars($r['image']); ?>" onerror="this.src='assets/img/users/default.png'" alt="">
-            <span><?php echo htmlspecialchars($r['full_name']); ?></span>
-          </div>
-        </div>
-      <?php endforeach; ?>
-    </div>
-  </div>
-</section>
-<?php endif; ?>
-
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+<?php require_once __DIR__ . '/includes/admin_footer.php'; ?>

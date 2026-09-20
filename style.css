@@ -1,0 +1,293 @@
+/* =========================================================
+   فندق الصرح الذهبي — التصميم العام
+   لوحة الألوان: حبر ليلي داكن + ذهب عتيق + عاجي + أخضر زمردي غامق
+   الخطوط: Amiri (عناوين) + Tajawal (نصوص)
+========================================================= */
+
+:root{
+  --ink:        #14161B;
+  --ink-soft:   #1E2128;
+  --gold:       #B58A3D;
+  --gold-light: #D8B876;
+  --ivory:      #F7F3EA;
+  --ivory-dark: #EFE8D8;
+  --emerald:    #1F3A34;
+  --text-dark:  #262420;
+  --text-muted: #6B675F;
+  --white:      #FFFFFF;
+  --danger:     #A6402F;
+  --success:    #3E6B4F;
+  --radius:     4px;
+  --shadow:     0 10px 30px rgba(20,22,27,.12);
+  --font-head:  'Amiri', 'Tajawal', serif;
+  --font-body:  'Tajawal', sans-serif;
+}
+
+*{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+body{
+  margin:0;
+  font-family: var(--font-body);
+  color: var(--text-dark);
+  background: var(--ivory);
+  line-height: 1.7;
+}
+img{ max-width:100%; display:block; }
+a{ text-decoration:none; color:inherit; }
+ul{ list-style:none; margin:0; padding:0; }
+h1,h2,h3,h4{ font-family: var(--font-head); font-weight:700; margin:0 0 .5em; color: var(--ink); line-height:1.3; }
+
+.container{ max-width:1180px; margin:0 auto; padding:0 24px; }
+.muted{ color: var(--text-muted); }
+.text-center{ text-align:center; margin-top:24px; }
+
+/* ---------------- الأزرار ---------------- */
+.btn{
+  display:inline-block; padding:12px 28px; border-radius:var(--radius);
+  font-family: var(--font-body); font-weight:500; font-size:15px;
+  border:1px solid transparent; cursor:pointer; transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+.btn-primary{ background: var(--gold); color: var(--ink); border-color: var(--gold); }
+.btn-primary:hover{ background: var(--gold-light); }
+.btn-outline{ background:transparent; border-color: var(--ink); color: var(--ink); }
+.btn-outline:hover{ background: var(--ink); color: var(--white); }
+.btn-outline-light{ background:transparent; border-color: var(--white); color: var(--white); }
+.btn-outline-light:hover{ background: var(--white); color: var(--ink); }
+.btn-lg{ padding:16px 36px; font-size:16px; }
+.btn-sm{ padding:6px 14px; font-size:13px; }
+.btn-block{ display:block; width:100%; text-align:center; }
+.btn-danger{ background: var(--danger); color:#fff; }
+.btn-success{ background: var(--success); color:#fff; }
+.btn-warning{ background:#8a6d1d; color:#fff; }
+
+/* ---------------- الهيدر ---------------- */
+.main-header{ background: var(--ink); position:sticky; top:0; z-index:100; border-bottom:1px solid rgba(181,138,61,.25); }
+.header-inner{ display:flex; align-items:center; justify-content:space-between; height:78px; }
+.logo{ font-family: var(--font-head); font-size:24px; color: var(--ivory); display:flex; align-items:center; gap:8px; }
+.logo i{ color: var(--gold); }
+.logo span{ color: var(--gold); }
+.main-nav{ display:flex; gap:30px; }
+.main-nav a{ color: var(--ivory); font-size:15px; position:relative; padding:6px 0; }
+.main-nav a::after{ content:''; position:absolute; right:0; bottom:0; width:0; height:1px; background: var(--gold); transition:width .25s ease; }
+.main-nav a:hover::after{ width:100%; }
+.header-actions{ display:flex; align-items:center; gap:14px; }
+.header-actions .btn{ padding:9px 20px; font-size:14px; }
+.header-actions .btn-outline{ border-color: var(--ivory); color: var(--ivory); }
+.header-actions .btn-outline:hover{ background: var(--ivory); color: var(--ink); }
+.nav-toggle{ display:none; background:none; border:none; color: var(--ivory); font-size:22px; cursor:pointer; }
+
+.avatar-sm{ width:38px; height:38px; border-radius:50%; object-fit:cover; border:1px solid var(--gold); }
+.user-menu{ position:relative; display:flex; align-items:center; gap:8px; cursor:pointer; }
+.user-menu span{ color: var(--ivory); font-size:14px; }
+.dropdown{ position:relative; }
+.dropdown-menu{
+  display:none; position:absolute; left:0; top:130%; background: var(--white); min-width:190px;
+  box-shadow: var(--shadow); border-radius: var(--radius); overflow:hidden; z-index:50;
+}
+.user-menu:hover .dropdown-menu{ display:block; }
+.dropdown-menu a{ display:flex; align-items:center; gap:8px; padding:12px 16px; color: var(--text-dark); font-size:14px; border-bottom:1px solid #eee; }
+.dropdown-menu a:last-child{ border-bottom:none; }
+.dropdown-menu a:hover{ background: var(--ivory-dark); }
+
+/* ---------------- الرسائل ---------------- */
+.alert{ padding:14px 20px; border-radius: var(--radius); margin:16px auto; font-size:14px; }
+.alert-success{ background:#E4F1E8; color: var(--success); border:1px solid #bfe0c9; }
+.alert-error{ background:#FBE7E3; color: var(--danger); border:1px solid #f2c3ba; }
+.alert ul{ margin:0; padding-inline-start:18px; list-style: disc; }
+
+/* ---------------- الهيرو ---------------- */
+/* قسم الهيرو (البانر الكبير) في الصفحة الرئيسية.
+   الصورة نفسها تُضاف كخلفية inline من ملف index.php (صورة يرفعها
+   الأدمن)، وهنا فقط نُعرّف الحجم وطبقة التعتيم فوقها. */
+.hero{
+  position:relative; min-height:640px; display:flex; align-items:center; justify-content:center; text-align:center;
+  background-color: var(--ink);
+  background-size: 100%;
+  background-position: center;
+  overflow:hidden;
+  /* حركة تكبير/تصغير بطيئة ومستمرة لصورة الخلفية خلف النص (تأثير سينمائي هادئ) */
+  animation: heroZoom 22s ease-in-out infinite alternate;
+}
+/* طبقة تعتيم شفافة فوق صورة الخلفية حتى يبقى النص الأبيض واضحًا مهما كانت الصورة */
+.hero-overlay{
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, rgba(20,22,27,.55), rgba(20,22,27,.8));
+  z-index:1;
+}
+.hero-content{ position:relative; z-index:2; color: var(--white); max-width:760px; }
+.hero-content h1{ color: var(--white); font-size:52px; margin-bottom:18px; }
+.hero-content h1 span{ color: var(--gold-light); }
+.hero-content p{ font-size:18px; color: var(--ivory-dark); margin-bottom:34px; }
+.hero-actions{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+
+/* ---------------- شريط الحجز السريع ---------------- */
+.booking-strip{ padding:0; margin-top:-46px; position:relative; z-index:5; }
+.booking-form-card{ background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding:26px; }
+.quick-booking{ display:flex; gap:18px; align-items:flex-end; flex-wrap:wrap; }
+.quick-booking .form-group{ flex:1; min-width:160px; margin:0; }
+.quick-booking label{ font-size:13px; color: var(--text-muted); }
+
+/* ---------------- الأقسام ---------------- */
+.section{ padding:80px 0; }
+.section-alt{ background: var(--ivory-dark); }
+.section-title{ text-align:center; max-width:600px; margin:0 auto 46px; }
+.section-title h2{ font-size:34px; }
+.section-title p{ color: var(--text-muted); }
+
+/* ---------------- بطاقات الغرف ---------------- */
+.cards-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr)); gap:30px; margin-bottom:16px; }
+.room-card{ background: var(--white); border:1px solid #E7E1D2; border-radius: var(--radius); overflow:hidden; transition: transform .25s ease; }
+.room-card:hover{ transform: translateY(-4px); }
+.room-img{ height:210px; background-size:cover; background-position:center; background-color:#ddd; }
+.room-body{ padding:22px; }
+.room-body h3{ font-size:20px; margin-bottom:8px; }
+.room-body p{ font-size:14px; color: var(--text-muted); }
+.room-meta{ margin:12px 0; }
+.room-meta li{ font-size:13px; color: var(--text-muted); display:flex; gap:6px; align-items:center; }
+.room-footer{ display:flex; align-items:center; justify-content:space-between; margin-top:16px; border-top:1px solid #EEE7D6; padding-top:14px; }
+.price{ color: var(--gold); font-weight:700; font-family: var(--font-head); font-size:17px; }
+
+/* ---------------- الخدمات ---------------- */
+.services-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); gap:28px; }
+.service-card{ text-align:center; background: var(--white); padding:36px 22px; border-radius: var(--radius); border:1px solid #E7E1D2; }
+.service-card i{ font-size:32px; color: var(--gold); margin-bottom:16px; }
+.service-card h4{ font-size:18px; }
+.service-card p{ font-size:14px; color: var(--text-muted); }
+
+/* ---------------- التقييمات ---------------- */
+.reviews-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:28px; }
+.review-card{ background: var(--white); padding:28px; border-radius: var(--radius); border:1px solid #E7E1D2; }
+.review-card p{ font-style:italic; color: var(--text-dark); margin:14px 0; }
+.stars i{ color:#DDD5C0; font-size:14px; }
+.stars i.active{ color: var(--gold); }
+.reviewer{ display:flex; align-items:center; gap:10px; }
+.reviewer img{ width:38px; height:38px; border-radius:50%; object-fit:cover; }
+
+/* ---------------- الفوتر ---------------- */
+.main-footer{ background: var(--ink); color: var(--ivory-dark); padding:60px 0 0; margin-top:60px; }
+.footer-grid{ display:grid; grid-template-columns:2fr 1fr 1fr; gap:40px; padding-bottom:40px; border-bottom:1px solid rgba(255,255,255,.08); }
+.footer-col h3{ color: var(--white); }
+.footer-col h4{ color: var(--gold-light); font-size:16px; margin-bottom:16px; }
+.footer-col a, .footer-col p{ display:block; color: var(--ivory-dark); font-size:14px; margin-bottom:10px; }
+/* أيقونات التواصل الاجتماعي (صور مرفوعة من صاحب الموقع) */
+.socials{ display:flex; gap:12px; margin-top:16px; }
+.socials a{
+  width:36px; height:36px; border-radius:50%; overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.05);
+  transition: transform .2s ease, border-color .2s ease;
+}
+.socials a:hover{ transform: translateY(-3px); border-color: var(--gold); }
+.socials a img{ width:100%; height:100%; object-fit:cover; }
+.footer-bottom{ text-align:center; padding:20px 0; font-size:13px; color: var(--text-muted); }
+
+/* ---------------- صفحات الهيرو الداخلية ---------------- */
+/* الهيرو الداخلي لأعلى الصفحات الفرعية (الغرف، الخدمات، المعرض، من نحن، تواصل معنا).
+   نفس فكرة .hero: صورة خلفية يرفعها الأدمن + طبقة تعتيم + محتوى فوقها. */
+.page-hero{
+  position:relative; color: var(--white); padding:90px 0; text-align:center;
+  background-color: var(--ink);
+  background-size: 100%;
+  background-position: center;
+  overflow:hidden;
+  /* نفس حركة التكبير الهادئة المستخدمة في هيرو الرئيسية، بمدة مختلفة قليلًا حتى لا تبدو متطابقة تمامًا */
+  animation: heroZoom 26s ease-in-out infinite alternate;
+}
+
+/* تعريف حركة "التكبير البطيء" (Ken Burns) المستخدمة في .hero و .page-hero معًا.
+   الفكرة: تكبير حجم صورة الخلفية تدريجيًا من 100% إلى 112% ثم الرجوع،
+   بحلقة لا نهائية (infinite) وحركة ذهابًا وإيابًا (alternate) بدون قفزة مفاجئة. */
+@keyframes heroZoom{
+  from{ background-size: 100%; }
+  to{ background-size: 112%; }
+}
+
+/* احترام إعدادات "تقليل الحركة" في جهاز الزائر (لأسباب صحية/تحسسية) بإيقاف الحركة تمامًا */
+@media (prefers-reduced-motion: reduce){
+  .hero, .page-hero{ animation: none; }
+}
+.page-hero-overlay{
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, rgba(20,22,27,.6), rgba(20,22,27,.82));
+  z-index:1;
+}
+.page-hero-content{ position:relative; z-index:2; }
+.page-hero h1{ color: var(--white); margin-bottom:10px; }
+.page-hero p{ color: var(--ivory-dark); }
+
+/* ---------------- الفلاتر ---------------- */
+.filters{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:30px; }
+.filter-btn{ padding:9px 20px; border:1px solid #D8CDB0; border-radius:20px; font-size:14px; color: var(--text-dark); }
+.filter-btn.active, .filter-btn:hover{ background: var(--ink); color: var(--white); border-color: var(--ink); }
+
+/* ---------------- تفاصيل الغرفة ---------------- */
+.room-details-grid{ display:grid; grid-template-columns:2fr 1fr; gap:40px; align-items:start; }
+.room-details-img{ height:360px; background-size:cover; background-position:center; border-radius: var(--radius); margin-bottom:22px; }
+.badge{ display:inline-block; background: var(--ivory-dark); color: var(--emerald); padding:5px 14px; border-radius:20px; font-size:13px; margin-bottom:14px; }
+.room-desc{ color: var(--text-muted); margin:16px 0; }
+.booking-box{ background: var(--white); border:1px solid #E7E1D2; border-radius: var(--radius); padding:26px; position:sticky; top:100px; }
+.booking-box h3{ margin-bottom:18px; }
+
+/* ---------------- المعرض ---------------- */
+.gallery-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:18px; }
+.gallery-item{ position:relative; border-radius: var(--radius); overflow:hidden; }
+.gallery-item img{ height:220px; width:100%; object-fit:cover; transition: transform .3s ease; }
+.gallery-item:hover img{ transform: scale(1.06); }
+.gallery-item span{ position:absolute; bottom:0; right:0; left:0; background: linear-gradient(180deg, transparent, rgba(0,0,0,.7)); color:#fff; font-size:13px; padding:20px 12px 10px; }
+
+/* ---------------- من نحن ---------------- */
+.about-content{ display:grid; grid-template-columns:1.4fr 1fr; gap:50px; align-items:center; }
+.about-stats{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.stat-box{ background: var(--white); border:1px solid #E7E1D2; padding:26px; text-align:center; border-radius: var(--radius); }
+.stat-box h3{ font-size:32px; color: var(--gold); margin-bottom:4px; }
+
+/* ---------------- تواصل معنا ---------------- */
+.contact-grid{ display:grid; grid-template-columns:1fr 2fr; gap:40px; }
+.contact-info p{ margin-bottom:16px; color: var(--text-muted); }
+.contact-form-card{ background: var(--white); border:1px solid #E7E1D2; border-radius: var(--radius); padding:30px; }
+
+/* ---------------- النماذج ---------------- */
+.form-row{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.form-group{ margin-bottom:18px; }
+.form-group label{ display:block; font-size:13px; margin-bottom:6px; color: var(--text-dark); font-weight:500; }
+.form-group input, .form-group select, .form-group textarea{
+  width:100%; padding:11px 14px; border:1px solid #D8CDB0; border-radius: var(--radius);
+  font-family: var(--font-body); font-size:14px; background: var(--white); color: var(--text-dark);
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus{
+  outline:2px solid var(--gold); outline-offset:1px; border-color: var(--gold);
+}
+
+/* ---------------- صفحات الدخول والتسجيل ---------------- */
+.auth-section{ padding:70px 0; display:flex; justify-content:center; }
+.auth-card{ background: var(--white); border:1px solid #E7E1D2; border-radius: var(--radius); padding:38px; width:100%; max-width:640px; }
+.auth-card h2{ display:flex; align-items:center; gap:10px; }
+.auth-switch{ text-align:center; margin-top:18px; font-size:14px; }
+.auth-switch a{ color: var(--gold); font-weight:600; }
+.profile-avatar{ text-align:center; margin-bottom:22px; }
+.profile-avatar img{ width:100px; height:100px; border-radius:50%; object-fit:cover; margin:0 auto; border:2px solid var(--gold); }
+
+/* ---------------- الجداول ---------------- */
+.data-table{ width:100%; border-collapse:collapse; background: var(--white); font-size:14px; }
+.data-table th, .data-table td{ padding:13px 14px; text-align:right; border-bottom:1px solid #EFE9DA; }
+.data-table th{ background: var(--ivory-dark); color: var(--ink); font-weight:600; }
+.bookings-table-wrap{ overflow-x:auto; }
+.status{ padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; }
+.status-pending{ background:#FBF0D9; color:#8a6d1d; }
+.status-confirmed{ background:#E4F1E8; color: var(--success); }
+.status-cancelled{ background:#FBE7E3; color: var(--danger); }
+
+/* ---------------- استجابة الموبايل ---------------- */
+@media (max-width: 900px){
+  .footer-grid{ grid-template-columns:1fr; }
+  .room-details-grid, .about-content, .contact-grid{ grid-template-columns:1fr; }
+  .nav-toggle{ display:block; }
+  .main-nav{
+    position:absolute; top:78px; right:0; left:0; background: var(--ink); flex-direction:column;
+    padding:16px 24px; display:none; gap:16px; border-top:1px solid rgba(181,138,61,.25);
+  }
+  .main-nav.open{ display:flex; }
+  .header-actions{ gap:8px; }
+  .hero-content h1{ font-size:36px; }
+  .form-row{ grid-template-columns:1fr; }
+}

@@ -1,0 +1,88 @@
+/* =========================================================
+   لوحة تحكم الأدمن — فندق الصرح الذهبي
+========================================================= */
+
+.admin-body{ background: var(--ivory-dark); margin:0; }
+.admin-layout{ display:flex; min-height:100vh; }
+
+.admin-sidebar{
+  width:250px; background: var(--ink); color: var(--ivory); flex-shrink:0;
+  position:sticky; top:0; height:100vh; overflow-y:auto;
+}
+.admin-logo{
+  font-family: var(--font-head); font-size:20px; padding:26px 20px; color: var(--gold-light);
+  border-bottom:1px solid rgba(255,255,255,.08); display:flex; align-items:center; gap:8px;
+}
+.admin-nav{ display:flex; flex-direction:column; padding:14px 0; }
+.admin-nav a{
+  padding:13px 22px; color: var(--ivory-dark); font-size:14px; display:flex; align-items:center; gap:10px;
+  border-right:3px solid transparent;
+}
+.admin-nav a:hover{ background: rgba(181,138,61,.12); color: var(--gold-light); border-right-color: var(--gold); }
+.admin-nav hr{ border:none; border-top:1px solid rgba(255,255,255,.08); margin:10px 20px; }
+
+.admin-main{ flex:1; min-width:0; }
+.admin-topbar{
+  background: var(--white); padding:18px 30px; display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid #E7E1D2; position:sticky; top:0; z-index:20;
+}
+.admin-topbar h1{ font-size:20px; margin:0; }
+.admin-user{ display:flex; align-items:center; gap:10px; font-size:14px; }
+.admin-user img{ width:36px; height:36px; border-radius:50%; object-fit:cover; }
+.admin-topbar .nav-toggle{ display:none; color: var(--ink); }
+
+.admin-content{ padding:30px; }
+
+.admin-panel{ background: var(--white); border:1px solid #E7E1D2; border-radius: var(--radius); padding:26px; margin-bottom:26px; }
+.admin-panel h2{ font-size:19px; margin-bottom:20px; }
+.panel-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+
+.stats-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:20px; margin-bottom:26px; }
+.stat-card{
+  background: var(--white); border:1px solid #E7E1D2; border-radius: var(--radius); padding:22px;
+  display:flex; align-items:center; gap:16px;
+}
+.stat-card i{ font-size:26px; color: var(--gold); width:50px; height:50px; display:flex; align-items:center; justify-content:center; background: var(--ivory-dark); border-radius:50%; }
+.stat-card.warn i{ color: var(--danger); }
+.stat-card h3{ font-size:24px; margin:0; }
+.stat-card p{ margin:0; font-size:13px; color: var(--text-muted); }
+
+.grid-form{ display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start; }
+.grid-form .full{ grid-column: 1 / -1; }
+.grid-form button, .grid-form a.btn{ align-self:flex-start; }
+
+.inline-form{ display:flex; gap:16px; align-items:flex-end; flex-wrap:wrap; }
+.inline-form .form-group{ margin-bottom:0; }
+
+.actions-cell{ display:flex; gap:8px; flex-wrap:wrap; }
+.table-input{ width:100%; padding:7px 10px; border:1px solid #D8CDB0; border-radius:4px; font-family:var(--font-body); font-size:13px; }
+
+.admin-gallery-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(180px,1fr)); gap:18px; }
+.admin-gallery-item{ border:1px solid #E7E1D2; border-radius: var(--radius); overflow:hidden; text-align:center; padding-bottom:10px; }
+.admin-gallery-item img{ height:140px; width:100%; object-fit:cover; margin-bottom:8px; }
+.admin-gallery-item p{ font-size:13px; margin:0 0 8px; color: var(--text-muted); }
+
+.messages-list{ display:flex; flex-direction:column; gap:16px; }
+.message-item{ border:1px solid #E7E1D2; border-radius: var(--radius); padding:18px; }
+.message-item.unread{ border-right:3px solid var(--gold); background:#FFFDF7; }
+.message-head{ display:flex; gap:14px; font-size:13px; color: var(--text-muted); margin-bottom:8px; flex-wrap:wrap; }
+.message-head strong{ color: var(--text-dark); }
+.subject{ font-weight:600; margin:0 0 6px; }
+
+@media (max-width: 900px){
+  .admin-sidebar{ position:fixed; right:-250px; z-index:200; transition:right .25s ease; }
+  .admin-sidebar.open{ right:0; }
+  .admin-topbar .nav-toggle{ display:block; background:none; border:none; font-size:20px; cursor:pointer; }
+  .grid-form{ grid-template-columns:1fr; }
+}
+
+/* ---------------- إدارة خلفيات الصفحات ---------------- */
+.banners-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:20px; }
+.banner-card{ border:1px solid #E7E1D2; border-radius: var(--radius); padding:14px; text-align:center; }
+.banner-preview{
+  height:120px; border-radius:4px; margin-bottom:10px; background-size:cover; background-position:center;
+  background-color: var(--ivory-dark); display:flex; align-items:center; justify-content:center;
+  color: var(--text-muted); font-size:13px;
+}
+.banner-form{ display:flex; flex-direction:column; gap:8px; margin-bottom:8px; }
+.banner-form input[type="file"]{ font-size:12px; }
